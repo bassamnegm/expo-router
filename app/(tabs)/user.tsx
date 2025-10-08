@@ -1,30 +1,21 @@
-import React, { useEffect, useState } from 'react';
+import { Usser, useUserStore } from '@/store/useUserStore';
+import React, { useEffect } from 'react';
 import { FlatList, Text, View } from 'react-native';
 
 const User = () => {
-
-    const [users, setUsers] = useState([]);
-
+    const { users, addUsers } = useUserStore()
     useEffect(() => {
-        getData();
+        addUsers();
     }, [])
-
-    async function getData() {
-        let res = await fetch("https://dummyjson.com/users");
-        let userRes = await res.json();
-        setUsers([...userRes.users])
-
-    }
-    function RednderData({ item }) {
-
-        return <Text style={{ margin: 5, borderWidth: 2 }}>{item.lastName}</Text>
+    function RednderData({ item }: { item: Usser }) {
+        return <Text style={{ margin: 5, borderWidth: 2 }}>{item.firstName}</Text>
     }
     return (
         <View>
             <FlatList
                 numColumns={2}
                 data={users}
-                keyExtractor={(item) => item.id}
+                keyExtractor={(item) => item.id.toString()}
                 renderItem={RednderData}
             />
         </View>
